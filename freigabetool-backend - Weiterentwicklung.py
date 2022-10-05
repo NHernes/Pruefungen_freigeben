@@ -86,15 +86,13 @@ def meeting_informationen_abrufen():
 
     heute=datetime.now().strftime("%Y-%m-%d")
 
-    zähler=-1
     liste1=[]
     liste2=[]
-    for i in daten:
+    for count,i in enumerate(daten):
         
-        zähler+=1
-        if heute in daten[zähler]["start"]:
-            liste1=liste1+[[daten[zähler]["id"],daten[zähler]["start"],daten[zähler]["title"]]]
-            liste2.append(daten[zähler]["title"])
+        if heute in daten[count]["start"]:
+            liste1=liste1+[[daten[count]["id"],daten[count]["start"],daten[count]["title"]]]
+            liste2.append(daten[count]["title"])
 
     return liste2
 
@@ -103,14 +101,12 @@ def meeting_informationen_abrufen():
 def tn_abrufen(meeting_auswahl):
     global liste1,personen_webex_meeting
     access_token=oauth()
-
-    zähler=-1
     
-    for i in liste1:
+    for count,i in enumerate(liste1):
         zähler+=1
 
-        if meeting_auswahl == liste1[zähler][2]:
-            prüfungs_id=liste1[zähler][0]
+        if meeting_auswahl == liste1[count][2]:
+            prüfungs_id=liste1[count][0]
     url=f"https://webexapis.com/v1/meetingParticipants?meetingId={prüfungs_id}&max=100"
                                                       
     headers={
@@ -142,14 +138,13 @@ def tn_abrufen(meeting_auswahl):
 
 
     personen_webex_meeting=[]
-    zähler=-1
-    for einträge in daten_tn:
-        zähler+=1
 
-        zedatname=daten_tn[zähler]["email"]
+    for count,einträge in enumerate(daten_tn):
+
+        zedatname=daten_tn[count]["email"]
         while "@" in zedatname:
             zedatname=zedatname[:-1]
-        personen_webex_meeting=personen_webex_meeting+[[daten_tn[zähler]["displayName"],zedatname,"❌"]]
+        personen_webex_meeting=personen_webex_meeting+[[daten_tn[count]["displayName"],zedatname,"❌"]]
 
 
     return personen_webex_meeting
