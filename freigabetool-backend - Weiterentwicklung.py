@@ -786,4 +786,4 @@ def excelliste_generieren():
     return erfolgreich
 
 
-eel.start("index.html",size=(1200, 900),mode='edge')
+eel.start("index.html",size=(1200, 830),mode='edge')

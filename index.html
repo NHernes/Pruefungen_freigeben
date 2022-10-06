@@ -1,0 +1,140 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Freigabetool</title>
+        <link rel="stylesheet" href="style.css">
+
+        
+    </head>
+
+    <body>
+    <div class="splashscreen" ><img src="e-exam-logo-rd.png" class="splashscreenbild" id="splash_bild">
+    <div class="splashscreenbild_text" id="splash_text">Freigabetool</div>
+
+    </div>
+    <h1 style="font-family: -apple-system, BlinkMacSystemFont, sans-serif;font-size:40px;margin-bottom:20px;margin-top:30px">Freigabetool <img src="e-exam-logo-rd.png"></h1>
+    
+    <div class="card">
+     
+        <p style="font-family: -apple-system, BlinkMacSystemFont, sans-serif;font-size:20px; font-weight:bold">Laufende Webex-Meetings abrufen </p>
+        <p><button class="button" style="margin-left: 5px" onclick=abruf_webex_daten()>Abfrage starten</button></p>
+        <p><div id="platzhalter5" style="margin-left:180px; margin-top:-46px; position:absolute"></div></p>
+
+        <p><select id="meeting-select" single><option value=""></option></select><button class="button", id="tn_abrufen" style="margin-left: 30px" onclick=abfrage() disabled>Teilnehmer:innen abrufen</button></p></form> 
+        <p><div id="platzhalter4" style="margin-left:730px; margin-top:-45px; position:absolute"></div></p>
+
+    </div>
+    <div class="flex-container">
+      <div class="flex">
+        <div class="card2">
+          <p style="font-family: -apple-system, BlinkMacSystemFont, sans-serif;font-size:20px;font-weight:bold">Teilnehmer:innen im Meeting</p>
+          <p id="meeting-name" style="font-family: -apple-system, BlinkMacSystemFont, sans-serif;font-size:16px;font-weight:normal">Webex-Meeting:</p>
+          <p id="gesamtzahl" style="font-family: -apple-system, BlinkMacSystemFont, sans-serif;font-size:16px;font-weight:normal">Gesamtzahl:</p>
+          <div id="freigegeben" style="font-family: -apple-system, BlinkMacSystemFont, sans-serif;font-size:16px;font-weight:normal; margin-bottom:5px">Freigegeben: 0</div>
+
+            <div id="tabellen-scroll">
+            <table id="table">
+              <thead>
+              <tr>
+                <th >Name</th>
+                <th>Zedat-Name</th>
+                <th>Freigabe</th>
+
+              </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+            </table>
+            </div>
+        </div>
+      
+        <div class="card4">
+          <button class="button" id="excelliste_button" style="margin-top:10px" onclick=excelliste_generieren() disabled>Freigabeliste herunterladen</button>
+        </div>
+      </div>
+
+
+      
+      <div class="card3">
+        <p style="font-family: -apple-system, BlinkMacSystemFont, sans-serif;font-size:20px;font-weight:bold">LPLUS Logindaten</p>
+        <form action=" ">
+          <div class="flex-container">
+            <div id="bn">
+              <p style="font-size: 20px;font-family: -apple-system, BlinkMacSystemFont, sans-serif;font-weight:normal;margin-top:-5px"><label for="benutzername">Benutzername:</label></p>
+              <input type="text" id="benutzername" placeholder="Benutzername"><br><br>
+            </div>
+            <div id="pw">
+              <p style="font-size: 20px;font-family: -apple-system, BlinkMacSystemFont, sans-serif;font-weight:normal; margin-top:-5px"><label for="passwort" class="credentials">Passwort:</label></p>
+              <input type="password" id="passwort" placeholder="Passwort"><br><br>
+            </div>
+        </div>
+        </form>
+        <p style="font-family: -apple-system, BlinkMacSystemFont, sans-serif;font-size:20px;font-weight:bold; margin-top: 30px;">LPLUS Lizenzen abrufen</p>
+        <p><div id="platzhalter1" style="margin-left:190px; margin-top:5px; position:absolute"></div></p>
+
+        <p><button class="button", id="lizenzen_abrufen" style="margin-left: 0px" onclick=lplus_lizenzen() disabled>Lizenzen abrufen</button></p>
+        <p><input id="lizenzen-abruf" list="lplus_lizenzen" autocomplete="off" disabled>
+          <datalist id="lplus_lizenzen"></datalist> 
+          
+        <button class="button", id="fächer_abrufen" style="margin-left: 15px" onclick=lplus_fächer() disabled>Fächer abrufen</button></p>
+
+        <p><div id="platzhalter2" style="margin-left:590px; margin-top:-48px; position:absolute"></div></p>
+        
+        <div class="flex-container">
+
+          <div class="fächerliste">
+          <select id="fächer-abruf" multiple ><option value=""></option></select>
+          </div>
+          <div class="knöpfe">
+          <button class="button", id="prüfung_freigeben"  onclick=prüfung_freigeben() disabled>Freigabe für Anwesende</button>
+
+          <button class="button", id="alle_prüfungen_freigeben" style="margin-top:10px" onclick=alle_prüfungen_freigeben() disabled>Freigabe für alle TN</button>
+          <button class="button", id="alle_prüfungen_zurückziehen" style="margin-top:10px" onclick=prüfungen_zurückziehen() disabled>Freigabe zurückziehen</button>
+          </div>
+        </div>
+      </div>
+      </div>
+
+      </div>
+    </div>
+
+    <div id="myModal" class="modal">
+
+      <!-- Modal content -->
+      <div class="modal-content">
+        <p class="modal-title">Prüfungsfreigabe</p>
+        <hr>
+        <p id="darstellung_abgerufene_tn" class="modal-text" style="display:inline-block;">Abgerufene Kandidat:innen: 0<div id="checkmark-1">&nbsp; &nbsp; &nbsp; ✔</div></p>     
+        <br>
+        <p id="darstellung_freigegebene_prüfungen" class="modal-text" style="margin-top:-20px; display:inline-block;">Freigegebene Prüfungen: 0<div id="checkmark-2" style="margin-top:-20px;"">&nbsp; &nbsp; &nbsp; ✔</div></p> 
+
+        <hr>
+        <button id="bestätigung_modal" class="button" style="animation: none" disabled>OK</button>
+      </div>
+    </div>
+
+    <div id="myModal2" class="modal">
+
+      <!-- Modal content -->
+      <div class="modal-content">
+        <p class="modal-title">Prüfungsfreigabe</p>
+        <hr>
+        <!-- <p id="darstellung_abgerufene_tn_zurückziehen" class="modal-text" style="display:inline-block;">Abgerufene Kandidat:innen: 0<div id="checkmark-3">&nbsp; &nbsp; &nbsp; ✔</div></p> -->
+        <br>
+        <p id="darstellung_zurückgezogene_prüfungen" class="modal-text" style="margin-top:-20px; display:inline-block;">Zurückgezogene Prüfungen: 0<div id="checkmark-4" style="margin-top:-20px;"">&nbsp; &nbsp; &nbsp; ✔</div></p> 
+
+        <hr>
+        <button id="bestätigung_modal2" class="button" style="animation: none" disabled>OK</button>
+      </div>
+    </div>
+    
+
+
+    </body>
+
+    <script type="text/javascript", src="/eel.js"></script>
+    <script src="index.js"></script>
+
+    
+</html>
