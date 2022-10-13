@@ -6,8 +6,6 @@ from dateutil.easter import *
 from dateutil.rrule import *
 from dateutil.parser import *
 from datetime import *
-import requests
-import json
 import eel
 import numpy as np
 from threading import Thread
