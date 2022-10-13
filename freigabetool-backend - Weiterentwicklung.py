@@ -103,8 +103,6 @@ def tn_abrufen(meeting_auswahl):
     access_token=oauth()
     
     for count,i in enumerate(liste1):
-        zähler+=1
-
         if meeting_auswahl == liste1[count][2]:
             prüfungs_id=liste1[count][0]
     url=f"https://webexapis.com/v1/meetingParticipants?meetingId={prüfungs_id}&max=100"
@@ -142,9 +140,11 @@ def tn_abrufen(meeting_auswahl):
     for count,einträge in enumerate(daten_tn):
 
         zedatname=daten_tn[count]["email"]
+        
         while "@" in zedatname:
             zedatname=zedatname[:-1]
-        personen_webex_meeting=personen_webex_meeting+[[daten_tn[count]["displayName"],zedatname,"❌"]]
+        if zedatname!="eexamwebex":
+            personen_webex_meeting=personen_webex_meeting+[[daten_tn[count]["displayName"],zedatname,"❌"]]
 
 
     return personen_webex_meeting
@@ -165,7 +165,7 @@ def lplus_lizenzen_abrufen(benutzername,passwort):
     }
 
     
-    r = requests.post("https://nx-uni-user-group.lplus-teststudio.de/token", 
+    r = requests.post("https://fub.lplus-teststudio.de/token", 
         data=payload)
 
     if r.status_code!=200:
@@ -179,7 +179,7 @@ def lplus_lizenzen_abrufen(benutzername,passwort):
             "Authorization": f"Bearer {token}"
             }
 
-        r = requests.get("https://nx-uni-user-group.lplus-teststudio.de/publicapi/v1/licences", 
+        r = requests.get("https://fub.lplus-teststudio.de/publicapi/v1/licences", 
             headers=headers)
 
 
@@ -224,6 +224,7 @@ def lplus_lizenzen_abrufen(benutzername,passwort):
         def auswahl_alle_lizenzen(lizenznamen,lizenzdaten):
             for count,eintrag in enumerate(lizenzen):
                 lizenznamen=lizenznamen+[f'{lizenzen[count]["name"]} | {lizenzen[count]["id"]}']
+                
                 lizenzdaten.update({lizenzen[count]["name"]:lizenzen[count]["id"]})
             return lizenznamen
 
@@ -231,6 +232,7 @@ def lplus_lizenzen_abrufen(benutzername,passwort):
 
         if lizenznamen==[]:
             lizenznamen="Keine Lizenzen"
+
 
         return lizenznamen
 
@@ -248,7 +250,7 @@ def lplus_fächer_abrufen(fach):
 
         if key in fach:
             lizenz_id=item
-            r = requests.get(f"https://nx-uni-user-group.lplus-teststudio.de/publicapi/v1/licences/{lizenz_id}/subjects", 
+            r = requests.get(f"https://fub.lplus-teststudio.de/publicapi/v1/licences/{lizenz_id}/subjects", 
                 headers=headers)
             alle_fächer=json.loads(r.text)
             for eintrag in alle_fächer:
@@ -269,7 +271,7 @@ def prüfung_freigeben(lizenz_id,fächer_id_array):
         while "|" in fächer_id_array[count]:
             fächer_id_array[count]=fächer_id_array[count][1:]
     
-    r = requests.get(f"https://nx-uni-user-group.lplus-teststudio.de/publicapi/v1/licences/{lizenz_id}/candidateRelations", 
+    r = requests.get(f"https://fub.lplus-teststudio.de/publicapi/v1/licences/{lizenz_id}/candidateRelations", 
     headers=headers)
 
     daten_gemeldete_nutzer=json.loads(r.text)
@@ -277,7 +279,7 @@ def prüfung_freigeben(lizenz_id,fächer_id_array):
     if len(daten_gemeldete_nutzer)<10:
         for eintrag in daten_gemeldete_nutzer:
             tn_id=eintrag["userDetailId"]
-            r = requests.get(f"https://nx-uni-user-group.lplus-teststudio.de/publicapi/v1/candidate/{tn_id}", 
+            r = requests.get(f"https://fub.lplus-teststudio.de/publicapi/v1/candidate/{tn_id}", 
             headers=headers)
 
             if r.status_code==200:
@@ -310,7 +312,7 @@ def prüfung_freigeben(lizenz_id,fächer_id_array):
             daten_gemeldete_nutzer1=array
             for eintrag in daten_gemeldete_nutzer1:
                 tn_id=eintrag["userDetailId"]
-                r = requests.get(f"https://nx-uni-user-group.lplus-teststudio.de/publicapi/v1/candidate/{tn_id}", 
+                r = requests.get(f"https://fub.lplus-teststudio.de/publicapi/v1/candidate/{tn_id}", 
                 headers=headers)
 
                 if r.status_code==200:
@@ -364,7 +366,7 @@ def prüfung_freigeben(lizenz_id,fächer_id_array):
 
                         }
                         payload=json.dumps(payload)
-                        url= f"https://nx-uni-user-group.lplus-teststudio.de/publicapi/v1/candidates/{eintrag2['userDetailId']}/releases/"
+                        url= f"https://fub.lplus-teststudio.de/publicapi/v1/candidates/{eintrag2['userDetailId']}/releases/"
                         r = requests.post(url, headers=headers2, data=payload)
 
                         json_data = json.loads(r.text)
@@ -399,7 +401,7 @@ def prüfung_freigeben(lizenz_id,fächer_id_array):
 
                             }
                             payload=json.dumps(payload)
-                            url= f"https://nx-uni-user-group.lplus-teststudio.de/publicapi/v1/candidate/{eintrag2['userDetailId']}/releases/"
+                            url= f"https://fub.lplus-teststudio.de/publicapi/v1/candidate/{eintrag2['userDetailId']}/releases/"
                             r = requests.post(url, headers=headers2, data=payload)
 
                             json_data = json.loads(r.text)
@@ -460,7 +462,7 @@ def übersicht_anzahl_kandidaten(lizenz_id_übersicht,fächer_id_array_übersich
         while "|" in fächer_id_array[zähler]:
             fächer_id_array[zähler]=fächer_id_array[zähler][1:]
 
-    r = requests.get(f"https://nx-uni-user-group.lplus-teststudio.de/publicapi/v1/licences/{lizenz_id}/candidateRelations", 
+    r = requests.get(f"https://fub.lplus-teststudio.de/publicapi/v1/licences/{lizenz_id}/candidateRelations", 
     headers=headers)
 
     daten_gemeldete_nutzer=json.loads(r.text)
@@ -492,7 +494,7 @@ def alle_prüfungen_freigeben(lizenz_id,fächer_id_array):
         while "|" in fächer_id_array[zähler]:
             fächer_id_array[zähler]=fächer_id_array[zähler][1:]
     
-    r = requests.get(f"https://nx-uni-user-group.lplus-teststudio.de/publicapi/v1/licences/{lizenz_id}/candidateRelations", 
+    r = requests.get(f"https://fub.lplus-teststudio.de/publicapi/v1/licences/{lizenz_id}/candidateRelations", 
     headers=headers)
 
     daten_gemeldete_nutzer=json.loads(r.text)
@@ -500,7 +502,7 @@ def alle_prüfungen_freigeben(lizenz_id,fächer_id_array):
     if len(daten_gemeldete_nutzer)<10:
         for eintrag in daten_gemeldete_nutzer:
             tn_id=eintrag["userDetailId"]
-            r = requests.get(f"https://nx-uni-user-group.lplus-teststudio.de/publicapi/v1/candidate/{tn_id}", 
+            r = requests.get(f"https://fub.lplus-teststudio.de/publicapi/v1/candidate/{tn_id}", 
             headers=headers)
             
             if r.status_code==200:
@@ -534,7 +536,7 @@ def alle_prüfungen_freigeben(lizenz_id,fächer_id_array):
             for eintrag in daten_gemeldete_nutzer1:
 
                 tn_id=eintrag["userDetailId"]
-                r = requests.get(f"https://nx-uni-user-group.lplus-teststudio.de/publicapi/v1/candidate/{tn_id}", 
+                r = requests.get(f"https://fub.lplus-teststudio.de/publicapi/v1/candidate/{tn_id}", 
                 headers=headers)
 
                 if r.status_code==200:
@@ -585,7 +587,7 @@ def alle_prüfungen_freigeben(lizenz_id,fächer_id_array):
 
                 }
                 payload=json.dumps(payload)
-                url= f"https://nx-uni-user-group.lplus-teststudio.de/publicapi/v1/candidate/{eintrag2['userDetailId']}/releases/"
+                url= f"https://fub.lplus-teststudio.de/publicapi/v1/candidate/{eintrag2['userDetailId']}/releases/"
                 r = requests.post(url, headers=headers2, data=payload)
 
                 json_data = json.loads(r.text)
@@ -617,7 +619,7 @@ def alle_prüfungen_freigeben(lizenz_id,fächer_id_array):
 
                     }
                     payload=json.dumps(payload)
-                    url= f"https://nx-uni-user-group.lplus-teststudio.de/publicapi/v1/candidate/{eintrag2['userDetailId']}/releases/"
+                    url= f"https://fub.lplus-teststudio.de/publicapi/v1/candidate/{eintrag2['userDetailId']}/releases/"
                     r = requests.post(url, headers=headers2, data=payload)
 
                     json_data = json.loads(r.text)
@@ -663,6 +665,15 @@ def alle_prüfungen_freigeben(lizenz_id,fächer_id_array):
     return personen_webex_meeting,freigabezähler
 
 @eel.expose
+def anzeige_freigabeauswahl_confirm(lizenz_id_übersicht,fächer_id_array_übersicht):
+    text=f"Auswahl: \nLizenz: {lizenz_id_übersicht}"
+    for i in fächer_id_array_übersicht:
+        text=text+f"\n      - Fach: {i}"
+    
+    return text
+
+
+@eel.expose
 def alle_prüfungen_zurückziehen(lizenz_id_übersicht,fächer_id_array_übersicht_zurückziehen):
     global freigabezähler_zurückziehen
     
@@ -676,7 +687,7 @@ def alle_prüfungen_zurückziehen(lizenz_id_übersicht,fächer_id_array_übersic
             fächer_id_array_übersicht_zurückziehen[zähler]=fächer_id_array_übersicht_zurückziehen[zähler][1:]
 
 
-    r = requests.get(f"https://nx-uni-user-group.lplus-teststudio.de/publicapi/v1/licences/{lizenz_id_übersicht}/candidateRelations", 
+    r = requests.get(f"https://fub.lplus-teststudio.de/publicapi/v1/licences/{lizenz_id_übersicht}/candidateRelations", 
     headers=headers)
 
     daten_gemeldete_nutzer=json.loads(r.text)
@@ -702,7 +713,7 @@ def alle_prüfungen_zurückziehen(lizenz_id_übersicht,fächer_id_array_übersic
 
                 }
                 payload=json.dumps(payload)
-                url= f"https://nx-uni-user-group.lplus-teststudio.de/publicapi/v1/candidate/{eintrag2['userDetailId']}/releases/"
+                url= f"https://fub.lplus-teststudio.de/publicapi/v1/candidate/{eintrag2['userDetailId']}/releases/"
                 r = requests.post(url, headers=headers2, data=payload)
 
                 json_data = json.loads(r.text)
@@ -732,7 +743,7 @@ def alle_prüfungen_zurückziehen(lizenz_id_übersicht,fächer_id_array_übersic
 
                     }
                     payload=json.dumps(payload)
-                    url= f"https://nx-uni-user-group.lplus-teststudio.de/publicapi/v1/candidate/{eintrag2['userDetailId']}/releases/"
+                    url= f"https://fub.lplus-teststudio.de/publicapi/v1/candidate/{eintrag2['userDetailId']}/releases/"
                     r = requests.post(url, headers=headers2, data=payload)
 
                     json_data = json.loads(r.text)
@@ -750,6 +761,16 @@ def alle_prüfungen_zurückziehen(lizenz_id_übersicht,fächer_id_array_übersic
             threads[-1].start()
         for thread in threads:
             thread.join()
+
+@eel.expose
+def zurückziehen_übersicht(lizenz_id_übersicht,fächer_id_array_übersicht_zurückziehen):
+    print(lizenz_id_übersicht,fächer_id_array_übersicht_zurückziehen)
+
+    text=f"Sollen alle Teilnehmer:innen für folgende Auswahl zurückgezogen werden: \nLizenz: {lizenz_id_übersicht}"
+    for i in fächer_id_array_übersicht_zurückziehen:
+        text=text+f"\n      - Fach: {i}"
+    
+    return text
 
 @eel.expose
 def excelliste_generieren():

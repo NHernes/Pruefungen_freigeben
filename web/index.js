@@ -139,8 +139,13 @@ async function prüfung_freigeben(){
         alert("Es liegen keine Teilnehmenden zur Freigabe vor!")
     }
     else{
+        var lizenz_id=document.getElementById("lizenzen-abruf").value;
+        const fächer_id=document.querySelectorAll('#fächer-abruf option:checked');
+        const fächer_id_array = Array.from(fächer_id).map(el => el.value);
 
-        var bestätigung=confirm("Sollen die Webex-Teilnehmer:innen für die ausgewählten Fächer freigegeben werden?")
+        text=await eel.anzeige_freigabeauswahl_confirm(lizenz_id,fächer_id_array)()
+
+        var bestätigung=confirm(`Soll die Prüfungsfreigabe für die anwesenden Prüflinge erfolgen? \n${text}`)
 
         if (bestätigung){
             globalThis.abgerufene_personen_anzahl=0
@@ -162,9 +167,6 @@ async function prüfung_freigeben(){
             });
             */
 
-            var lizenz_id=document.getElementById("lizenzen-abruf").value;
-            const fächer_id=document.querySelectorAll('#fächer-abruf option:checked');
-            const fächer_id_array = Array.from(fächer_id).map(el => el.value);
             const ergebnis=await eel.prüfung_freigeben(lizenz_id,fächer_id_array)();
             const daten_freigabe=ergebnis[0]
             daten_freigabe.sort()
@@ -225,7 +227,9 @@ async function alle_prüfungen_freigeben(){
     var zahl_prüflinge_gesamt=übersicht_prüfunsdaten[0]
     var prüfungen_gesamt=übersicht_prüfunsdaten[1]
 
-    var bestätigung=confirm(`Sollen ${prüfungen_gesamt} Prüfungsfreigaben für insgesamt ${zahl_prüflinge_gesamt} Prüflinge erfolgen?`)
+    text=await eel.anzeige_freigabeauswahl_confirm(lizenz_id_übersicht,fächer_id_array_übersicht)()
+
+    var bestätigung=confirm(`Sollen ${prüfungen_gesamt} Prüfungsfreigaben für insgesamt ${zahl_prüflinge_gesamt} Prüflinge erfolgen? \n${text} `)
     if (bestätigung){
         globalThis.abgerufene_personen_anzahl=0
         globalThis.freigegebene_prüfungen_anzahl=0
@@ -322,24 +326,32 @@ function progess_zurückgezogene_prüfungen(info_python){
 
 eel.expose(prüfungen_zurückziehen);
 async function prüfungen_zurückziehen(){
-    globalThis.abgerufene_personen_zurückziehen_anzahl=0
-    globalThis.zurückgezogene_prüfungen_anzahl=0
-    /*document.getElementById("checkmark-3").style.color="white"*/
-    document.getElementById("checkmark-4").style.color="white"
-    /*darstellung_abgerufene_tn_zurückziehen=document.getElementById("darstellung_abgerufene_tn_zurückziehen")*/
-    /*darstellung_abgerufene_tn_zurückziehen.innerHTML=`Abgerufene Kandidat:innen: ${abgerufene_personen_zurückziehen_anzahl}`*/
-    darstellung_zurückgezogene_prüfungen=document.getElementById("darstellung_zurückgezogene_prüfungen");
-    darstellung_zurückgezogene_prüfungen.innerHTML=`Zurückgezogene Prüfungen: ${globalThis.zurückgezogene_prüfungen_anzahl}`;
-    modal2.style.display = "block";
-
     var lizenz_id_übersicht=document.getElementById("lizenzen-abruf").value;
     const fächer_id_übersicht_zurückziehen=document.querySelectorAll('#fächer-abruf option:checked');
     const fächer_id_array_übersicht_zurückziehen= Array.from(fächer_id_übersicht_zurückziehen).map(el => el.value);
-    ergebnis=await eel.alle_prüfungen_zurückziehen(lizenz_id_übersicht,fächer_id_array_übersicht_zurückziehen)()
+    text=await eel.zurückziehen_übersicht(lizenz_id_übersicht,fächer_id_array_übersicht_zurückziehen)()
+    var bestätigung_zurückziehen=confirm(`${text}`)
 
-    var button_modal2 = document.getElementById("bestätigung_modal2");
-    document.getElementById("checkmark-4").style.color="black"
-    button_modal2.disabled=false
+    if (bestätigung_zurückziehen){
+        globalThis.abgerufene_personen_zurückziehen_anzahl=0
+        globalThis.zurückgezogene_prüfungen_anzahl=0
+        /*document.getElementById("checkmark-3").style.color="white"*/
+        document.getElementById("checkmark-4").style.color="white"
+        /*darstellung_abgerufene_tn_zurückziehen=document.getElementById("darstellung_abgerufene_tn_zurückziehen")*/
+        /*darstellung_abgerufene_tn_zurückziehen.innerHTML=`Abgerufene Kandidat:innen: ${abgerufene_personen_zurückziehen_anzahl}`*/
+        darstellung_zurückgezogene_prüfungen=document.getElementById("darstellung_zurückgezogene_prüfungen");
+        darstellung_zurückgezogene_prüfungen.innerHTML=`Zurückgezogene Prüfungen: ${globalThis.zurückgezogene_prüfungen_anzahl}`;
+        modal2.style.display = "block";
+
+        ergebnis=await eel.alle_prüfungen_zurückziehen(lizenz_id_übersicht,fächer_id_array_übersicht_zurückziehen)()
+
+        var button_modal2 = document.getElementById("bestätigung_modal2");
+        document.getElementById("checkmark-4").style.color="black"
+        button_modal2.disabled=false
+        }
+    else{
+        alert("Aktion wurde abgebrochen");
+    }
 }
 
 eel.expose(excelliste_generieren);
