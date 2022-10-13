@@ -173,6 +173,7 @@ img {
   font-size:16px;
   font-family: -apple-system, BlinkMacSystemFont, sans-serif;
   border-radius: 4px;
+  
 }
 
 #fächer-abruf{
@@ -182,6 +183,7 @@ img {
   font-family: -apple-system, BlinkMacSystemFont, sans-serif;
   border-radius: 4px;
   overflow-y: auto;
+  overflow-x: auto;
   padding-top:5px;
   padding-left:5px;
   padding-right:5px;
@@ -306,12 +308,21 @@ tr:nth-child(even) {
 }
 
 #bn {
-  flex: 1;
+  flex:1
+  
 }
 
 #pw {
-  flex: 2;
+  flex:1
+
 }
+
+#but {
+  flex:1
+  
+}
+
+
 
 .fächerliste {
   flex:3

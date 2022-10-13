@@ -6,3 +6,5 @@ code=""
 
 lplus_client_id= ""
 lplus_client_secret= ""
+
+refresh_token=""

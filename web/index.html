@@ -3,6 +3,7 @@
     <head>
         <title>Freigabetool</title>
         <link rel="stylesheet" href="style.css">
+        <link rel="icon" href="logo.ico">
 
         
     </head>
@@ -58,7 +59,7 @@
       
       <div class="card3">
         <p style="font-family: -apple-system, BlinkMacSystemFont, sans-serif;font-size:20px;font-weight:bold">LPLUS Logindaten</p>
-        <form action=" ">
+
           <div class="flex-container">
             <div id="bn">
               <p style="font-size: 20px;font-family: -apple-system, BlinkMacSystemFont, sans-serif;font-weight:normal;margin-top:-5px"><label for="benutzername">Benutzername:</label></p>
@@ -68,13 +69,18 @@
               <p style="font-size: 20px;font-family: -apple-system, BlinkMacSystemFont, sans-serif;font-weight:normal; margin-top:-5px"><label for="passwort" class="credentials">Passwort:</label></p>
               <input type="password" id="passwort" placeholder="Passwort"><br><br>
             </div>
+            <div id="but">
+            <button class="button" id="lizenzen_abrufen" style="margin-top:30px" onclick=lplus_lizenzen() disabled>Lizenzen abrufen</button>
+            <p><div id="platzhalter1" style="margin-left:180px; margin-top:-47px; position:absolute"></div></p>
+            </div>
+            
         </div>
-        </form>
-        <p style="font-family: -apple-system, BlinkMacSystemFont, sans-serif;font-size:20px;font-weight:bold; margin-top: 30px;">LPLUS Lizenzen abrufen</p>
-        <p><div id="platzhalter1" style="margin-left:190px; margin-top:5px; position:absolute"></div></p>
 
-        <p><button class="button", id="lizenzen_abrufen" style="margin-left: 0px" onclick=lplus_lizenzen() disabled>Lizenzen abrufen</button></p>
-        <p><input id="lizenzen-abruf" list="lplus_lizenzen" autocomplete="off" disabled>
+        <p style="font-family: -apple-system, BlinkMacSystemFont, sans-serif;font-size:20px;font-weight:bold; margin-top: 30px;">LPLUS Lizenzen auswählen</p>
+        
+
+        <!--<p><button class="button" id="lizenzen_abrufen" style="margin-left: 0px" onclick=lplus_lizenzen() disabled>Lizenzen abrufen</button></p>-->
+        <input id="lizenzen-abruf" list="lplus_lizenzen" autocomplete="off" disabled>
           <datalist id="lplus_lizenzen"></datalist> 
           
         <button class="button", id="fächer_abrufen" style="margin-left: 15px" onclick=lplus_fächer() disabled>Fächer abrufen</button></p>
@@ -122,8 +128,8 @@
         <hr>
         <!-- <p id="darstellung_abgerufene_tn_zurückziehen" class="modal-text" style="display:inline-block;">Abgerufene Kandidat:innen: 0<div id="checkmark-3">&nbsp; &nbsp; &nbsp; ✔</div></p> -->
         <br>
-        <p id="darstellung_zurückgezogene_prüfungen" class="modal-text" style="margin-top:-20px; display:inline-block;">Zurückgezogene Prüfungen: 0<div id="checkmark-4" style="margin-top:-20px;"">&nbsp; &nbsp; &nbsp; ✔</div></p> 
-
+        <p id="darstellung_abgerufene_tn_zurückziehen" class="modal-text" style="margin-top:-20px; display:inline-block;">Geprüfte Freigaben: 0<div id="checkmark-3" style="margin-top:-20px;"">&nbsp; &nbsp; &nbsp; ✔</div></p> 
+        <p id="darstellung_zurückgezogene_prüfungen" class="modal-text" style="margin-top:-20px; display:inline-block;">Zurückgezogene Prüfungen: 0<div id="checkmark-4" style="margin-top:-20px;"">&nbsp; &nbsp; &nbsp; ✔</div></p>
         <hr>
         <button id="bestätigung_modal2" class="button" style="animation: none" disabled>OK</button>
       </div>

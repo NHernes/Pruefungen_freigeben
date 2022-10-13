@@ -23,6 +23,13 @@ document.addEventListener('input', (evt) => {
     }
   });
 
+document.getElementById("lizenzen-abruf").addEventListener("input", dropfächer);
+
+function dropfächer(){
+    console.log("test")
+    document.getElementById("fächer-abruf").innerHTML = '';
+
+}
 
 eel.expose(abruf_webex_daten);
 async function abruf_webex_daten(){
@@ -310,15 +317,16 @@ function progess_freigegebene_prüfungen(info_python){
 
 eel.expose(progess_abgerufene_personen_zurückziehen);
 function progess_abgerufene_personen_zurückziehen(info_python){
-    document.getElementById("checkmark-3").style.color="black"
+    //*document.getElementById("checkmark-3").style.color="black"*//
     globalThis.abgerufene_personen_zurückziehen_anzahl=globalThis.abgerufene_personen_zurückziehen_anzahl+info_python;
     darstellung_abgerufene_personen_zurückziehen=document.getElementById("darstellung_abgerufene_tn_zurückziehen");
     darstellung_abgerufene_personen_zurückziehen.innerHTML=`Abgerufene Kandidat:innen: ${globalThis.abgerufene_personen_zurückziehen_anzahl}`
 }
 
+
 eel.expose(progess_zurückgezogene_prüfungen);
 function progess_zurückgezogene_prüfungen(info_python){
-    /*document.getElementById("checkmark-3").style.color="black"*/
+    //*document.getElementById("checkmark-4").style.color="black"*//
     globalThis.zurückgezogene_prüfungen_anzahl=globalThis.zurückgezogene_prüfungen_anzahl+info_python;
     darstellung_zurückgezogene_prüfungen=document.getElementById("darstellung_zurückgezogene_prüfungen");
     darstellung_zurückgezogene_prüfungen.innerHTML=`Zurückgezogene Prüfungen: ${globalThis.zurückgezogene_prüfungen_anzahl}`
@@ -335,10 +343,11 @@ async function prüfungen_zurückziehen(){
     if (bestätigung_zurückziehen){
         globalThis.abgerufene_personen_zurückziehen_anzahl=0
         globalThis.zurückgezogene_prüfungen_anzahl=0
-        /*document.getElementById("checkmark-3").style.color="white"*/
+
+        document.getElementById("checkmark-3").style.color="white"
         document.getElementById("checkmark-4").style.color="white"
-        /*darstellung_abgerufene_tn_zurückziehen=document.getElementById("darstellung_abgerufene_tn_zurückziehen")*/
-        /*darstellung_abgerufene_tn_zurückziehen.innerHTML=`Abgerufene Kandidat:innen: ${abgerufene_personen_zurückziehen_anzahl}`*/
+        darstellung_abgerufene_tn_zurückziehen=document.getElementById("darstellung_abgerufene_tn_zurückziehen")
+        darstellung_abgerufene_tn_zurückziehen.innerHTML=`Abgerufene Kandidat:innen: ${abgerufene_personen_zurückziehen_anzahl}`
         darstellung_zurückgezogene_prüfungen=document.getElementById("darstellung_zurückgezogene_prüfungen");
         darstellung_zurückgezogene_prüfungen.innerHTML=`Zurückgezogene Prüfungen: ${globalThis.zurückgezogene_prüfungen_anzahl}`;
         modal2.style.display = "block";
@@ -346,6 +355,7 @@ async function prüfungen_zurückziehen(){
         ergebnis=await eel.alle_prüfungen_zurückziehen(lizenz_id_übersicht,fächer_id_array_übersicht_zurückziehen)()
 
         var button_modal2 = document.getElementById("bestätigung_modal2");
+        document.getElementById("checkmark-3").style.color="black"
         document.getElementById("checkmark-4").style.color="black"
         button_modal2.disabled=false
         }
@@ -356,7 +366,9 @@ async function prüfungen_zurückziehen(){
 
 eel.expose(excelliste_generieren);
 async function excelliste_generieren(){
-    ergebnis=await eel.excelliste_generieren()()
+    var meeting_auswahl=document.getElementById("meeting-select").value;
+    console.log(meeting_auswahl)
+    ergebnis=await eel.excelliste_generieren(meeting_auswahl)()
     if (ergebnis){
         alert("Excelliste generiert.")
     }
