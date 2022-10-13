@@ -4,4 +4,4 @@ Das Frontend wird mit HTML und Javascript gerendert, das Backend wird über Pyth
 
 Die Credentials und Secrets werden in der Config hinterlegt, eine plain config ist angehangen.
 
-![image](https://user-images.githubusercontent.com/100680594/194248121-e9549ec0-d87d-4c9a-9830-556678b37bff.png)
+![image](https://user-images.githubusercontent.com/100680594/195637414-6aa59df2-4920-4606-b624-c8948cc9f2e0.png)
